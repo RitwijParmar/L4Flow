@@ -12,7 +12,7 @@ These claims are supported by the current source tree and test suite:
 
 ## Do not claim until a live GCP run is completed
 
-Do not invent throughput, latency, savings, or GPU-utilization numbers. The project is intentionally prepared to produce them, but the current GCP accounts are billing-disabled.
+Do not invent throughput, latency, savings, or GPU-utilization numbers. The project is intentionally prepared to produce them, but this repository does not yet contain a live GCP benchmark result.
 
 After a live run, use the generated report to fill this bullet:
 
