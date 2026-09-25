@@ -32,6 +32,15 @@ Run the tests with:
 pytest -q
 ```
 
+## Verified local improvement
+
+Run the real local reference benchmark with the optional Transformers dependencies:
+
+    python -m pip install -e '.[local-benchmark]'
+    python benchmarks/local_reference.py --device cpu --requests 16 --batch-size 4 --max-new-tokens 8 --p95-slo-ms 15 --json-output reports/local_reference_cpu.json --markdown-output reports/local_reference_cpu.md
+
+The committed report measured 2.72x request-throughput improvement and 172.27% token-throughput improvement from micro-batching, with both strategies under the 15 ms p95 SLO. These are local CPU reference metrics from the tiny-random-gpt2 checkpoint; they are not Cloud Run L4 results.
+
 ## Routing contract
 
 The gateway accepts standard `/v1/chat/completions` JSON. For controlled experiments, set `x-l4flow-route` to `auto`, `cpu`, or `gpu`. Every successful response includes:

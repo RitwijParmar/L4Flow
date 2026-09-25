@@ -3,5 +3,6 @@
 __pycache__/
 *.py[cod]
 .env
-reports/
-benchmarks/
+reports/live-*.json
+reports/live-*.md
+reports/raw/

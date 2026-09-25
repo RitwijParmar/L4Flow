@@ -10,6 +10,18 @@ These claims are supported by the current source tree and test suite:
 - Added Cloud Run/Terraform guardrails: GPU scale-to-zero, maximum one GPU instance, private GPU ingress, and service-to-service identity-token authentication.
 - Added a 13-test regression suite covering routing decisions, saturation, fallback selection, API headers, metrics, benchmark reports, and cost accounting.
 
+## Verified local improvement
+
+The committed report in reports/local_reference_cpu.md records a real local reference run using the safe tiny-random-gpt2 checkpoint, 16 requests, batch size 4, and an explicit 15 ms p95 SLO:
+
+- throughput increased from 186.864 to 508.765 requests/second: 2.72x;
+- generated-token throughput increased from 1,494.909 to 4,070.120 tokens/second: 172.27%;
+- p95 latency remained under the 15 ms SLO for both serial and micro-batched strategies: 6.117 ms and 8.824 ms.
+
+Resume bullet for this exact local result:
+
+    Benchmarked serial vs micro-batched Transformers inference on a CPU reference path; improved throughput 2.72x (186.9 to 508.8 requests/s) and token throughput 172.3% (1,494.9 to 4,070.1 tokens/s) while keeping p95 latency under a 15 ms SLO.
+
 ## Do not claim until a live GCP run is completed
 
 Do not invent throughput, latency, savings, or GPU-utilization numbers. The project is intentionally prepared to produce them, but this repository does not yet contain a live GCP benchmark result.

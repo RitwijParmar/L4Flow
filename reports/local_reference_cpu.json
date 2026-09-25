@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-25T22:13:40.368275+00:00",
+  "model_id": "hf-internal-testing/tiny-random-gpt2",
+  "device": "cpu",
+  "host": "macOS-26.2-arm64-arm-64bit",
+  "torch_version": "2.3.0",
+  "requests": 16,
+  "batch_size": 4,
+  "max_new_tokens": 8,
+  "results": {
+    "serial_baseline": {
+      "name": "serial_baseline",
+      "requests": 16,
+      "batch_size": 1,
+      "total_seconds": 0.085624,
+      "latency_ms": {
+        "p50": 5.108,
+        "p95": 6.117,
+        "mean": 5.351
+      },
+      "generated_tokens": 128,
+      "requests_per_second": 186.864,
+      "tokens_per_second": 1494.909
+    },
+    "micro_batch": {
+      "name": "micro_batch",
+      "requests": 16,
+      "batch_size": 4,
+      "total_seconds": 0.031449,
+      "latency_ms": {
+        "p50": 7.765,
+        "p95": 8.824,
+        "mean": 7.861
+      },
+      "generated_tokens": 128,
+      "requests_per_second": 508.765,
+      "tokens_per_second": 4070.12
+    }
+  },
+  "improvements": {
+    "throughput_speedup": 2.7226,
+    "p95_latency_reduction_percent": -44.2537,
+    "token_throughput_improvement_percent": 172.2654
+  },
+  "evidence_scope": "local_reference_only",
+  "slo": {
+    "p95_ms": 15.0,
+    "serial_passed": true,
+    "micro_batch_passed": true
+  }
+}

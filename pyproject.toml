@@ -21,6 +21,10 @@ dev = [
   "pytest>=8,<9",
   "pytest-asyncio>=0.23,<1",
 ]
+local-benchmark = [
+  "torch>=2.3",
+  "transformers>=4.57",
+]
 
 [project.scripts]
 l4flow-benchmark = "l4flow.benchmark:main"
