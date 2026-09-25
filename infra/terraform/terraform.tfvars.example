@@ -1,0 +1,4 @@
+project_id      = "replace-with-your-project-id"
+region          = "us-east4"
+router_image    = "us-east4-docker.pkg.dev/replace-with-your-project-id/l4flow/l4flow-router:latest"
+inference_image = "us-east4-docker.pkg.dev/replace-with-your-project-id/l4flow/l4flow-vllm:latest"
