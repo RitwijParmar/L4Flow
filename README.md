@@ -1,9 +1,10 @@
 # L4Flow
 
-L4Flow is an engine-agnostic inference SLO and cost regression gate for
-OpenAI-compatible endpoints. It turns raw request traces into a release
-decision: did the candidate deployment regress p95 latency, streamed TTFT,
-error rate, or cost per 1,000 output tokens?
+L4Flow is an inference FinOps and SLO cost-governor for OpenAI-compatible
+endpoints. It turns request traces plus an explicit Cloud Run rate card into a
+cost allocation, budget forecast, and SLO-constrained deployment
+recommendation: which serving policy meets the tail-latency target at the
+lowest modeled cost per 1,000 output tokens?
 
 ## Why this is not TickYantra
 
@@ -11,24 +12,24 @@ error rate, or cost per 1,000 output tokens?
 control plane: it owns bounded admission, prefix affinity, adaptive SLO
 feedback, and the SGLang request path.
 
-L4Flow sits outside the serving engine. It does not implement admission,
-continuous batching, prefix scheduling, KV-cache management, or model
-execution. Instead, it evaluates any equivalent endpoint—SGLang, vLLM,
-Vertex AI, or a Cloud Run service—from black-box traces and blocks a release
-when the candidate violates a performance or cost policy. The two projects
-can therefore be used together: TickYantra controls the path; L4Flow verifies
-the path across deployments.
+L4Flow sits outside the serving engine and owns the economics layer. It does
+not implement admission, continuous batching, prefix scheduling, KV-cache
+management, or model execution. It attributes shared resource groups once,
+applies versioned CPU/memory/GPU rates, forecasts spend against a budget, and
+selects the cheapest SLO-passing policy. The two projects can therefore be
+used together: TickYantra controls the path; L4Flow decides whether the path
+is financially safe to operate.
 
 ```text
 SGLang / vLLM / Vertex / Cloud Run endpoint
                     |
                     v
-             JSONL request traces
+             JSONL request traces + rate card
                     |
                     v
-       L4Flow normalize -> summarize -> gate
+     L4Flow allocate -> forecast -> SLO/cost optimize
                     |
-             PASS / FAIL + evidence
+       PASS / FAIL + budget + recommendation
 ```
 
 ## Quickstart: run a release gate
@@ -56,6 +57,39 @@ The gate checks:
 - p95 TTFT regression when both traces contain streamed TTFT;
 - absolute error-rate increase;
 - estimated cost per 1,000 output tokens.
+
+## Cost and budget analysis
+
+`l4flow-cost` is the primary FinOps artifact. It loads the raw trace and a
+versioned rate card, rounds resource groups to the billing quantum, attributes
+shared micro-batches once, forecasts monthly spend, and recommends the
+lowest-cost strategy that still passes the p95 SLO.
+
+```bash
+l4flow-cost \
+  reports/repeated_local_trace_cpu.jsonl \
+  --rate-card examples/rate_cards/cloud_run_request_based_us_east4.json \
+  --p95-slo-ms 20 \
+  --requests-per-day 100000 \
+  --days 30 \
+  --budget-usd 5 \
+  --output reports/repeated_local_cost_cpu.json \
+  --markdown-output reports/repeated_local_cost_cpu.md
+```
+
+The example rate card records Cloud Run request-based on-demand rates,
+including CPU, memory, NVIDIA L4, and 100 ms billing quantization. The official
+source is [Cloud Run pricing](https://cloud.google.com/run/pricing); verify
+the rate card before using it for a real invoice or credit balance. The local
+experiment uses the CPU profile, so its dollar result is a modeled comparison,
+not GPU billing.
+
+On the committed trace, serial execution models at $0.0002375 per 1K output
+tokens, while micro-batch 4 models at $0.00005937 per 1K output tokens: **75%
+lower modeled cost** while still passing the 20 ms p95 SLO. At the explicit
+scenario of 100,000 requests/day, that is $5.70/month for serial versus
+$1.425/month for micro-batch 4 against a $5 budget. Micro-batch 8 is cheaper
+but fails the SLO, so it is rejected by the recommendation logic.
 
 Run the tests with:
 
@@ -98,17 +132,16 @@ reuse, and five trials per strategy. That is 640 requests per strategy and
 
 | Strategy | p95 ms | p99 ms | Requests/s | Tokens/s | 20 ms SLO trial pass rate |
 |---|---:|---:|---:|---:|---:|
-| Serial baseline | 9.480 | 19.275 | 143.740 | 1,149.924 | 5/5 |
-| Micro-batch 2 | 12.059 | 16.087 | 219.696 | 1,757.569 | 5/5 |
-| Micro-batch 4 | 15.616 | 20.498 | 340.951 | 2,727.610 | 4/5 |
-| Micro-batch 8 | 23.006 | 41.140 | 451.949 | 3,615.592 | 0/5 |
+| Serial baseline | 7.689 | 8.641 | 163.535 | 1,308.282 | 5/5 |
+| Micro-batch 2 | 13.147 | 21.731 | 201.865 | 1,614.922 | 4/5 |
+| Micro-batch 4 | 14.574 | 16.180 | 347.712 | 2,781.699 | 5/5 |
+| Micro-batch 8 | 20.228 | 70.772 | 463.041 | 3,704.328 | 2/5 |
 
-The SLO-constrained recommendation is micro-batch 2: **1.528x throughput**
-(95% trial-speedup CI **[1.422, 1.629]**), **52.84% higher token throughput**,
-and **34.57% lower compute-seconds per 1,000 output tokens**. Larger batches
-were faster but failed the 20 ms p95 gate: batch 4 passed only 4/5 trials and
-batch 8 passed 0/5. This is a measured tradeoff, not a blanket “batching is
-better” claim.
+The SLO-constrained recommendation is micro-batch 4: **2.126x throughput**
+(95% trial-speedup CI **[2.006, 2.227]**), **112.62% higher token throughput**,
+and **52.97% lower compute-seconds per 1,000 output tokens**, while passing the
+20 ms p95 gate in 5/5 trials. Batch 8 was faster but passed only 2/5 trials.
+This is a measured SLO/cost tradeoff, not a blanket “batching is better” claim.
 
 The full evidence is committed in
 `reports/repeated_local_reference_cpu.md`, the workload in

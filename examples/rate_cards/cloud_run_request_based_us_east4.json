@@ -1,0 +1,38 @@
+{
+  "name": "cloud-run-request-based-us-east4-on-demand-l4",
+  "source_url": "https://cloud.google.com/run/pricing",
+  "region": "us-east4",
+  "currency": "USD",
+  "billing_model": "request-based",
+  "billing_quantum_seconds": 0.1,
+  "free_tier_enabled": false,
+  "rates": {
+    "cpu_vcpu_second_usd": 0.000018,
+    "memory_gib_second_usd": 0.000002,
+    "l4_gpu_second_usd": 0.0001867
+  },
+  "profiles": {
+    "local_transformers_reference": {
+      "vcpus": 1,
+      "memory_gib": 0.5,
+      "l4_gpus": 0
+    },
+    "cloud_run_cpu_1vCPU_512MiB": {
+      "vcpus": 1,
+      "memory_gib": 0.5,
+      "l4_gpus": 0
+    },
+    "cloud_run_l4_4vCPU_16GiB": {
+      "vcpus": 4,
+      "memory_gib": 16,
+      "l4_gpus": 1
+    }
+  },
+  "backend_profiles": {
+    "local-transformers": "local_transformers_reference",
+    "cpu": "cloud_run_cpu_1vCPU_512MiB",
+    "gpu": "cloud_run_l4_4vCPU_16GiB",
+    "sglang": "cloud_run_l4_4vCPU_16GiB",
+    "vllm": "cloud_run_l4_4vCPU_16GiB"
+  }
+}

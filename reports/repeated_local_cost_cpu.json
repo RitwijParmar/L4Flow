@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "rate_card": {
+    "name": "cloud-run-request-based-us-east4-on-demand-l4",
+    "source_url": "https://cloud.google.com/run/pricing",
+    "region": "us-east4",
+    "billing_model": "request-based",
+    "billing_quantum_seconds": 0.1,
+    "free_tier_applied": false
+  },
+  "strategies": {
+    "micro_batch_2": {
+      "requests": 640,
+      "successful": 640,
+      "error_rate": 0.0,
+      "resource_groups": 320,
+      "latency_ms": {
+        "p50": 9.388,
+        "p95": 13.147,
+        "p99": 21.731
+      },
+      "output_tokens": 5120,
+      "resource_seconds": {
+        "cpu_vcpu_seconds": 32.0,
+        "memory_gib_seconds": 16.0,
+        "l4_gpu_seconds": 0.0
+      },
+      "gross_cost_usd": 0.000608,
+      "cost_per_request_usd": 9.5e-07,
+      "cost_per_1k_output_tokens_usd": 0.00011875,
+      "free_tier_applied": false,
+      "rate_card": "cloud-run-request-based-us-east4-on-demand-l4",
+      "region": "us-east4",
+      "slo": {
+        "p95_ms": 20.0,
+        "passed": true
+      },
+      "forecast": {
+        "requests_per_day": 100000.0,
+        "days": 30,
+        "requests": 3000000.0,
+        "cost_usd": 2.85,
+        "budget_usd": 5.0,
+        "budget_utilization": 0.57,
+        "status": "within_budget"
+      }
+    },
+    "micro_batch_4": {
+      "requests": 640,
+      "successful": 640,
+      "error_rate": 0.0,
+      "resource_groups": 160,
+      "latency_ms": {
+        "p50": 11.424,
+        "p95": 14.574,
+        "p99": 16.18
+      },
+      "output_tokens": 5120,
+      "resource_seconds": {
+        "cpu_vcpu_seconds": 16.0,
+        "memory_gib_seconds": 8.0,
+        "l4_gpu_seconds": 0.0
+      },
+      "gross_cost_usd": 0.000304,
+      "cost_per_request_usd": 4.7e-07,
+      "cost_per_1k_output_tokens_usd": 5.937e-05,
+      "free_tier_applied": false,
+      "rate_card": "cloud-run-request-based-us-east4-on-demand-l4",
+      "region": "us-east4",
+      "slo": {
+        "p95_ms": 20.0,
+        "passed": true
+      },
+      "forecast": {
+        "requests_per_day": 100000.0,
+        "days": 30,
+        "requests": 3000000.0,
+        "cost_usd": 1.425,
+        "budget_usd": 5.0,
+        "budget_utilization": 0.285,
+        "status": "within_budget"
+      }
+    },
+    "micro_batch_8": {
+      "requests": 640,
+      "successful": 640,
+      "error_rate": 0.0,
+      "resource_groups": 80,
+      "latency_ms": {
+        "p50": 16.459,
+        "p95": 20.228,
+        "p99": 70.772
+      },
+      "output_tokens": 5120,
+      "resource_seconds": {
+        "cpu_vcpu_seconds": 8.0,
+        "memory_gib_seconds": 4.0,
+        "l4_gpu_seconds": 0.0
+      },
+      "gross_cost_usd": 0.000152,
+      "cost_per_request_usd": 2.4e-07,
+      "cost_per_1k_output_tokens_usd": 2.969e-05,
+      "free_tier_applied": false,
+      "rate_card": "cloud-run-request-based-us-east4-on-demand-l4",
+      "region": "us-east4",
+      "slo": {
+        "p95_ms": 20.0,
+        "passed": false
+      },
+      "forecast": {
+        "requests_per_day": 100000.0,
+        "days": 30,
+        "requests": 3000000.0,
+        "cost_usd": 0.7125,
+        "budget_usd": 5.0,
+        "budget_utilization": 0.1425,
+        "status": "within_budget"
+      }
+    },
+    "serial_baseline": {
+      "requests": 640,
+      "successful": 640,
+      "error_rate": 0.0,
+      "resource_groups": 640,
+      "latency_ms": {
+        "p50": 5.892,
+        "p95": 7.689,
+        "p99": 8.641
+      },
+      "output_tokens": 5120,
+      "resource_seconds": {
+        "cpu_vcpu_seconds": 64.0,
+        "memory_gib_seconds": 32.0,
+        "l4_gpu_seconds": 0.0
+      },
+      "gross_cost_usd": 0.001216,
+      "cost_per_request_usd": 1.9e-06,
+      "cost_per_1k_output_tokens_usd": 0.0002375,
+      "free_tier_applied": false,
+      "rate_card": "cloud-run-request-based-us-east4-on-demand-l4",
+      "region": "us-east4",
+      "slo": {
+        "p95_ms": 20.0,
+        "passed": true
+      },
+      "forecast": {
+        "requests_per_day": 100000.0,
+        "days": 30,
+        "requests": 3000000.0,
+        "cost_usd": 5.7,
+        "budget_usd": 5.0,
+        "budget_utilization": 1.14,
+        "status": "over_budget"
+      }
+    }
+  },
+  "recommendation": {
+    "strategy": "micro_batch_4",
+    "reason": "lowest modeled cost per 1K output tokens among SLO-passing strategies",
+    "cost_per_1k_output_tokens_usd": 5.937e-05
+  },
+  "evidence_scope": "modeled_cost_from_trace_and_rate_card"
+}

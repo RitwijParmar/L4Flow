@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "l4flow"
 version = "0.1.0"
-description = "Engine-agnostic inference SLO and cost regression gates for GCP and OpenAI-compatible endpoints"
+description = "Inference FinOps and SLO cost governance for GCP and OpenAI-compatible endpoints"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -30,6 +30,7 @@ local-benchmark = [
 l4flow-benchmark = "l4flow.benchmark:main"
 l4flow-gate = "l4flow.gate:main"
 l4flow-workload = "l4flow.workload:main"
+l4flow-cost = "l4flow.cost:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

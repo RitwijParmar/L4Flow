@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-09-26T03:30:34.903795+00:00",
+  "generated_at": "2026-09-26T03:41:09.805788+00:00",
   "model_id": "hf-internal-testing/tiny-random-gpt2",
   "device": "cpu",
   "host": "macOS-26.2-arm64-arm-64bit",
@@ -38,23 +38,23 @@
       "trials": 5,
       "requests": 640,
       "batch_size": 1,
-      "total_seconds": 4.45247,
+      "total_seconds": 3.913528,
       "latency_ms": {
-        "p50": 6.255,
-        "p95": 9.48,
-        "p99": 19.275,
-        "mean": 6.951
+        "p50": 5.892,
+        "p95": 7.689,
+        "p99": 8.641,
+        "mean": 6.109
       },
       "generated_tokens": 5120,
-      "requests_per_second": 143.74,
-      "tokens_per_second": 1149.924,
+      "requests_per_second": 163.535,
+      "tokens_per_second": 1308.282,
       "trial_throughput_ci95": [
-        131.2666,
-        157.7332
+        158.947,
+        167.4994
       ],
       "trial_token_throughput_ci95": [
-        1050.1334,
-        1266.795
+        1271.2736,
+        1339.6932
       ],
       "trial_results": [
         {
@@ -62,87 +62,87 @@
           "trial": 0,
           "requests": 128,
           "batch_size": 1,
-          "total_seconds": 0.765668,
+          "total_seconds": 0.768773,
           "latency_ms": {
-            "p50": 5.799,
-            "p95": 7.563,
-            "p99": 9.157,
-            "mean": 5.977
+            "p50": 5.781,
+            "p95": 7.797,
+            "p99": 8.641,
+            "mean": 6.0
           },
           "generated_tokens": 1024,
-          "requests_per_second": 167.174,
-          "tokens_per_second": 1337.395
+          "requests_per_second": 166.499,
+          "tokens_per_second": 1331.993
         },
         {
           "strategy": "serial_baseline",
           "trial": 1,
           "requests": 128,
           "batch_size": 1,
-          "total_seconds": 0.845309,
+          "total_seconds": 0.824557,
           "latency_ms": {
-            "p50": 5.878,
-            "p95": 8.443,
-            "p99": 18.1,
-            "mean": 6.598
+            "p50": 6.307,
+            "p95": 8.126,
+            "p99": 8.947,
+            "mean": 6.435
           },
           "generated_tokens": 1024,
-          "requests_per_second": 151.424,
-          "tokens_per_second": 1211.391
+          "requests_per_second": 155.235,
+          "tokens_per_second": 1241.879
         },
         {
           "strategy": "serial_baseline",
           "trial": 2,
           "requests": 128,
           "batch_size": 1,
-          "total_seconds": 1.058208,
+          "total_seconds": 0.763472,
           "latency_ms": {
-            "p50": 6.993,
-            "p95": 16.864,
-            "p99": 38.446,
-            "mean": 8.26
+            "p50": 5.771,
+            "p95": 7.412,
+            "p99": 8.316,
+            "mean": 5.959
           },
           "generated_tokens": 1024,
-          "requests_per_second": 120.959,
-          "tokens_per_second": 967.674
+          "requests_per_second": 167.655,
+          "tokens_per_second": 1341.241
         },
         {
           "strategy": "serial_baseline",
           "trial": 3,
           "requests": 128,
           "batch_size": 1,
-          "total_seconds": 0.882078,
+          "total_seconds": 0.762614,
           "latency_ms": {
-            "p50": 6.098,
-            "p95": 9.623,
-            "p99": 18.577,
-            "mean": 6.886
+            "p50": 5.758,
+            "p95": 7.409,
+            "p99": 8.714,
+            "mean": 5.952
           },
           "generated_tokens": 1024,
-          "requests_per_second": 145.112,
-          "tokens_per_second": 1160.895
+          "requests_per_second": 167.844,
+          "tokens_per_second": 1342.75
         },
         {
           "strategy": "serial_baseline",
           "trial": 4,
           "requests": 128,
           "batch_size": 1,
-          "total_seconds": 0.901207,
+          "total_seconds": 0.794112,
           "latency_ms": {
-            "p50": 6.605,
-            "p95": 10.218,
-            "p99": 14.068,
-            "mean": 7.034
+            "p50": 5.992,
+            "p95": 7.721,
+            "p99": 8.2,
+            "mean": 6.198
           },
           "generated_tokens": 1024,
-          "requests_per_second": 142.032,
-          "tokens_per_second": 1136.254
+          "requests_per_second": 161.186,
+          "tokens_per_second": 1289.49
         }
       ],
-      "compute_seconds_per_1k_output_tokens": 0.869623,
+      "compute_seconds_per_1k_output_tokens": 0.764361,
       "slo": {
         "p95_ms": 20.0,
         "trial_pass_rate": 1.0,
-        "request_pass_rate": 0.9906,
+        "request_pass_rate": 1.0,
         "passing_trials": 5,
         "total_trials": 5
       }
@@ -152,23 +152,23 @@
       "trials": 5,
       "requests": 640,
       "batch_size": 2,
-      "total_seconds": 2.913114,
+      "total_seconds": 3.170432,
       "latency_ms": {
-        "p50": 8.746,
-        "p95": 12.059,
-        "p99": 16.087,
-        "mean": 9.097
+        "p50": 9.388,
+        "p95": 13.147,
+        "p99": 21.731,
+        "mean": 9.899
       },
       "generated_tokens": 5120,
-      "requests_per_second": 219.696,
-      "tokens_per_second": 1757.569,
+      "requests_per_second": 201.865,
+      "tokens_per_second": 1614.922,
       "trial_throughput_ci95": [
-        208.448,
-        230.801
+        185.0264,
+        218.8666
       ],
       "trial_token_throughput_ci95": [
-        1666.985,
-        1846.4094
+        1478.8772,
+        1744.8784
       ],
       "trial_results": [
         {
@@ -176,88 +176,88 @@
           "trial": 0,
           "requests": 128,
           "batch_size": 2,
-          "total_seconds": 0.556368,
+          "total_seconds": 0.572869,
           "latency_ms": {
-            "p50": 8.699,
-            "p95": 10.305,
-            "p99": 12.813,
-            "mean": 8.688
+            "p50": 8.866,
+            "p95": 11.202,
+            "p99": 12.422,
+            "mean": 8.943
           },
           "generated_tokens": 1024,
-          "requests_per_second": 230.063,
-          "tokens_per_second": 1840.508
+          "requests_per_second": 223.437,
+          "tokens_per_second": 1787.495
         },
         {
           "strategy": "micro_batch_2",
           "trial": 1,
           "requests": 128,
           "batch_size": 2,
-          "total_seconds": 0.608229,
+          "total_seconds": 0.623779,
           "latency_ms": {
-            "p50": 8.545,
-            "p95": 11.199,
-            "p99": 59.456,
-            "mean": 9.498
+            "p50": 9.688,
+            "p95": 12.65,
+            "p99": 13.672,
+            "mean": 9.737
           },
           "generated_tokens": 1024,
-          "requests_per_second": 210.447,
-          "tokens_per_second": 1683.575
+          "requests_per_second": 205.201,
+          "tokens_per_second": 1641.606
         },
         {
           "strategy": "micro_batch_2",
           "trial": 2,
           "requests": 128,
           "batch_size": 2,
-          "total_seconds": 0.638558,
+          "total_seconds": 0.767574,
           "latency_ms": {
-            "p50": 9.458,
-            "p95": 15.883,
-            "p99": 16.778,
-            "mean": 9.97
+            "p50": 9.845,
+            "p95": 21.731,
+            "p99": 59.364,
+            "mean": 11.983
           },
           "generated_tokens": 1024,
-          "requests_per_second": 200.452,
-          "tokens_per_second": 1603.614
+          "requests_per_second": 166.759,
+          "tokens_per_second": 1334.072
         },
         {
           "strategy": "micro_batch_2",
           "trial": 3,
           "requests": 128,
           "batch_size": 2,
-          "total_seconds": 0.559584,
+          "total_seconds": 0.584954,
           "latency_ms": {
-            "p50": 8.775,
-            "p95": 10.424,
-            "p99": 14.478,
-            "mean": 8.738
+            "p50": 9.155,
+            "p95": 11.849,
+            "p99": 13.147,
+            "mean": 9.132
           },
           "generated_tokens": 1024,
-          "requests_per_second": 228.741,
-          "tokens_per_second": 1829.929
+          "requests_per_second": 218.821,
+          "tokens_per_second": 1750.564
         },
         {
           "strategy": "micro_batch_2",
           "trial": 4,
           "requests": 128,
           "batch_size": 2,
-          "total_seconds": 0.550375,
+          "total_seconds": 0.621256,
           "latency_ms": {
-            "p50": 8.693,
-            "p95": 10.482,
-            "p99": 12.966,
-            "mean": 8.594
+            "p50": 9.616,
+            "p95": 12.861,
+            "p99": 16.465,
+            "mean": 9.7
           },
           "generated_tokens": 1024,
-          "requests_per_second": 232.569,
-          "tokens_per_second": 1860.551
+          "requests_per_second": 206.034,
+          "tokens_per_second": 1648.274
         }
       ],
-      "compute_seconds_per_1k_output_tokens": 0.568968,
+      "compute_seconds_per_1k_output_tokens": 0.619225,
       "slo": {
         "p95_ms": 20.0,
-        "trial_pass_rate": 1.0,
-        "request_pass_rate": 0.9969,
-        "passing_trials": 5,
+        "trial_pass_rate": 0.8,
+        "request_pass_rate": 0.9875,
+        "passing_trials": 4,
         "total_trials": 5
       }
     },
@@ -266,23 +266,23 @@
       "trials": 5,
       "requests": 640,
       "batch_size": 4,
-      "total_seconds": 1.877101,
+      "total_seconds": 1.840602,
       "latency_ms": {
-        "p50": 11.381,
-        "p95": 15.616,
-        "p99": 20.498,
-        "mean": 11.724
+        "p50": 11.424,
+        "p95": 14.574,
+        "p99": 16.18,
+        "mean": 11.493
       },
       "generated_tokens": 5120,
-      "requests_per_second": 340.951,
-      "tokens_per_second": 2727.61,
+      "requests_per_second": 347.712,
+      "tokens_per_second": 2781.699,
       "trial_throughput_ci95": [
-        325.0422,
-        353.1282
+        333.4202,
+        363.9132
       ],
       "trial_token_throughput_ci95": [
-        2600.3362,
-        2825.0262
+        2667.363,
+        2901.3038
       ],
       "trial_results": [
         {
@@ -290,88 +290,88 @@
           "trial": 0,
           "requests": 128,
           "batch_size": 4,
-          "total_seconds": 0.360595,
+          "total_seconds": 0.37187,
           "latency_ms": {
-            "p50": 11.109,
-            "p95": 14.393,
-            "p99": 15.616,
-            "mean": 11.261
+            "p50": 11.689,
+            "p95": 14.855,
+            "p99": 15.643,
+            "mean": 11.609
           },
           "generated_tokens": 1024,
-          "requests_per_second": 354.969,
-          "tokens_per_second": 2839.751
+          "requests_per_second": 344.206,
+          "tokens_per_second": 2753.648
         },
         {
           "strategy": "micro_batch_4",
           "trial": 1,
           "requests": 128,
           "batch_size": 4,
-          "total_seconds": 0.363304,
+          "total_seconds": 0.366787,
           "latency_ms": {
-            "p50": 11.007,
-            "p95": 14.699,
-            "p99": 15.047,
-            "mean": 11.344
+            "p50": 11.424,
+            "p95": 14.472,
+            "p99": 14.945,
+            "mean": 11.45
           },
           "generated_tokens": 1024,
-          "requests_per_second": 352.322,
-          "tokens_per_second": 2818.579
+          "requests_per_second": 348.977,
+          "tokens_per_second": 2791.814
         },
         {
           "strategy": "micro_batch_4",
           "trial": 2,
           "requests": 128,
           "batch_size": 4,
-          "total_seconds": 0.375339,
+          "total_seconds": 0.342817,
           "latency_ms": {
-            "p50": 11.8,
-            "p95": 16.409,
-            "p99": 17.394,
-            "mean": 11.72
+            "p50": 10.94,
+            "p95": 13.303,
+            "p99": 14.089,
+            "mean": 10.703
           },
           "generated_tokens": 1024,
-          "requests_per_second": 341.025,
-          "tokens_per_second": 2728.203
+          "requests_per_second": 373.377,
+          "tokens_per_second": 2987.019
         },
         {
           "strategy": "micro_batch_4",
           "trial": 3,
           "requests": 128,
           "batch_size": 4,
-          "total_seconds": 0.413252,
+          "total_seconds": 0.398797,
           "latency_ms": {
-            "p50": 11.938,
-            "p95": 20.498,
-            "p99": 29.899,
-            "mean": 12.906
+            "p50": 12.734,
+            "p95": 15.619,
+            "p99": 18.481,
+            "mean": 12.451
           },
           "generated_tokens": 1024,
-          "requests_per_second": 309.739,
-          "tokens_per_second": 2477.909
+          "requests_per_second": 320.965,
+          "tokens_per_second": 2567.722
         },
         {
           "strategy": "micro_batch_4",
           "trial": 4,
           "requests": 128,
           "batch_size": 4,
-          "total_seconds": 0.364611,
+          "total_seconds": 0.360331,
           "latency_ms": {
-            "p50": 11.269,
-            "p95": 14.768,
-            "p99": 17.3,
-            "mean": 11.388
+            "p50": 10.743,
+            "p95": 14.675,
+            "p99": 16.18,
+            "mean": 11.25
           },
           "generated_tokens": 1024,
-          "requests_per_second": 351.059,
-          "tokens_per_second": 2808.471
+          "requests_per_second": 355.229,
+          "tokens_per_second": 2841.835
         }
       ],
-      "compute_seconds_per_1k_output_tokens": 0.366621,
+      "compute_seconds_per_1k_output_tokens": 0.359493,
       "slo": {
         "p95_ms": 20.0,
-        "trial_pass_rate": 0.8,
-        "request_pass_rate": 0.9812,
-        "passing_trials": 4,
+        "trial_pass_rate": 1.0,
+        "request_pass_rate": 1.0,
+        "passing_trials": 5,
         "total_trials": 5
       }
     },
@@ -380,23 +380,23 @@
       "trials": 5,
       "requests": 640,
       "batch_size": 8,
-      "total_seconds": 1.416089,
+      "total_seconds": 1.382167,
       "latency_ms": {
-        "p50": 17.343,
-        "p95": 23.006,
-        "p99": 41.14,
-        "mean": 17.688
+        "p50": 16.459,
+        "p95": 20.228,
+        "p99": 70.772,
+        "mean": 17.26
       },
       "generated_tokens": 5120,
-      "requests_per_second": 451.949,
-      "tokens_per_second": 3615.592,
+      "requests_per_second": 463.041,
+      "tokens_per_second": 3704.328,
       "trial_throughput_ci95": [
-        424.7616,
-        471.629
+        427.6408,
+        508.966
       ],
       "trial_token_throughput_ci95": [
-        3398.0922,
-        3769.4266
+        3414.5342,
+        4071.727
       ],
       "trial_results": [
         {
@@ -404,102 +404,102 @@
           "trial": 0,
           "requests": 128,
           "batch_size": 8,
-          "total_seconds": 0.27496,
+          "total_seconds": 0.296291,
           "latency_ms": {
-            "p50": 16.537,
-            "p95": 25.588,
-            "p99": 25.588,
-            "mean": 17.173
+            "p50": 18.75,
+            "p95": 22.506,
+            "p99": 22.506,
+            "mean": 18.503
           },
           "generated_tokens": 1024,
-          "requests_per_second": 465.522,
-          "tokens_per_second": 3724.174
+          "requests_per_second": 432.008,
+          "tokens_per_second": 3456.06
         },
         {
           "strategy": "micro_batch_8",
           "trial": 1,
           "requests": 128,
           "batch_size": 8,
-          "total_seconds": 0.272641,
+          "total_seconds": 0.251641,
           "latency_ms": {
-            "p50": 17.545,
-            "p95": 20.01,
-            "p99": 20.01,
-            "mean": 17.027
+            "p50": 16.1,
+            "p95": 17.881,
+            "p99": 17.881,
+            "mean": 15.708
           },
           "generated_tokens": 1024,
-          "requests_per_second": 469.482,
-          "tokens_per_second": 3755.855
+          "requests_per_second": 508.661,
+          "tokens_per_second": 4069.285
         },
         {
           "strategy": "micro_batch_8",
           "trial": 2,
           "requests": 128,
           "batch_size": 8,
-          "total_seconds": 0.275972,
+          "total_seconds": 0.241229,
           "latency_ms": {
-            "p50": 17.368,
-            "p95": 20.738,
-            "p99": 20.738,
-            "mean": 17.23
+            "p50": 15.318,
+            "p95": 18.125,
+            "p99": 18.125,
+            "mean": 15.058
           },
           "generated_tokens": 1024,
-          "requests_per_second": 463.816,
-          "tokens_per_second": 3710.528
+          "requests_per_second": 530.616,
+          "tokens_per_second": 4244.929
         },
         {
           "strategy": "micro_batch_8",
           "trial": 3,
           "requests": 128,
           "batch_size": 8,
-          "total_seconds": 0.323014,
+          "total_seconds": 0.31849,
           "latency_ms": {
-            "p50": 19.512,
-            "p95": 35.707,
-            "p99": 35.707,
-            "mean": 20.174
+            "p50": 17.107,
+            "p95": 70.772,
+            "p99": 70.772,
+            "mean": 19.891
           },
           "generated_tokens": 1024,
-          "requests_per_second": 396.268,
-          "tokens_per_second": 3170.144
+          "requests_per_second": 401.897,
+          "tokens_per_second": 3215.172
         },
         {
           "strategy": "micro_batch_8",
           "trial": 4,
           "requests": 128,
           "batch_size": 8,
-          "total_seconds": 0.269502,
+          "total_seconds": 0.274516,
           "latency_ms": {
-            "p50": 15.519,
-            "p95": 41.14,
-            "p99": 41.14,
-            "mean": 16.834
+            "p50": 17.349,
+            "p95": 20.918,
+            "p99": 20.918,
+            "mean": 17.138
           },
           "generated_tokens": 1024,
-          "requests_per_second": 474.949,
-          "tokens_per_second": 3799.595
+          "requests_per_second": 466.276,
+          "tokens_per_second": 3730.207
         }
       ],
-      "compute_seconds_per_1k_output_tokens": 0.27658,
+      "compute_seconds_per_1k_output_tokens": 0.269954,
       "slo": {
         "p95_ms": 20.0,
-        "trial_pass_rate": 0.0,
-        "request_pass_rate": 0.825,
-        "passing_trials": 0,
+        "trial_pass_rate": 0.4,
+        "request_pass_rate": 0.925,
+        "passing_trials": 2,
         "total_trials": 5
       }
     }
   },
   "improvements": {
-    "selected_strategy": "micro_batch_2",
-    "throughput_speedup": 1.5284,
+    "selected_strategy": "micro_batch_4",
+    "throughput_speedup": 2.1262,
     "throughput_speedup_ci95": [
-      1.421651,
-      1.629164
+      2.006243,
+      2.226614
     ],
-    "token_throughput_improvement_percent": 52.8422,
-    "p95_latency_change_percent": -27.2046,
-    "compute_seconds_per_1k_output_tokens_change_percent": 34.573
+    "token_throughput_improvement_percent": 112.6223,
+    "p95_latency_change_percent": -89.5435,
+    "compute_seconds_per_1k_output_tokens_change_percent": 52.9682
   },
   "evidence_scope": "local_reference_only",
   "cost_scope": "no_billing_data; compute_seconds_only"

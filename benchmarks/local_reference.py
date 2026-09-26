@@ -158,6 +158,7 @@ def run_strategy(
                     "batch_size": batch_size,
                     "workload_class": row.workload_class,
                     "prefix_id": row.prefix_id,
+                    "resource_group": f"{strategy}-t{trial}-b{offset // batch_size:04d}",
                     "model_id": model_id,
                     "evidence_scope": "local_reference_only",
                 }
