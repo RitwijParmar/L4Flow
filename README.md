@@ -90,28 +90,55 @@ passed directly to `l4flow-gate`.
 
 ## Verified local reference result
 
-The committed local report measured serial versus micro-batched Transformers
-inference on `hf-internal-testing/tiny-random-gpt2` using CPU:
+The committed repeated experiment uses a fixed 128-request workload with an
+observed 67/40/21 short/medium/long mix (~52%/31%/16%), 71.88% shared-prefix
+reuse, and five trials per strategy. That is 640 requests per strategy and
+2,560 raw request rows across the batch-size sweep. The model is the safe
+`hf-internal-testing/tiny-random-gpt2` checkpoint on CPU.
 
-- request throughput: **186.864 -> 508.765 requests/s (2.72x)**;
-- generated-token throughput: **1,494.909 -> 4,070.120 tokens/s (172.27%)**;
-- p95 latency: **6.117 ms -> 8.824 ms**, with both strategies under a
-  **15 ms p95 SLO**.
+| Strategy | p95 ms | p99 ms | Requests/s | Tokens/s | 20 ms SLO trial pass rate |
+|---|---:|---:|---:|---:|---:|
+| Serial baseline | 9.480 | 19.275 | 143.740 | 1,149.924 | 5/5 |
+| Micro-batch 2 | 12.059 | 16.087 | 219.696 | 1,757.569 | 5/5 |
+| Micro-batch 4 | 15.616 | 20.498 | 340.951 | 2,727.610 | 4/5 |
+| Micro-batch 8 | 23.006 | 41.140 | 451.949 | 3,615.592 | 0/5 |
 
-These are reproducible local reference measurements, not NVIDIA L4 or Cloud
-Run results. A real run is required before claiming cloud latency, GPU
-utilization, cost savings, or capacity improvements.
+The SLO-constrained recommendation is micro-batch 2: **1.528x throughput**
+(95% trial-speedup CI **[1.422, 1.629]**), **52.84% higher token throughput**,
+and **34.57% lower compute-seconds per 1,000 output tokens**. Larger batches
+were faster but failed the 20 ms p95 gate: batch 4 passed only 4/5 trials and
+batch 8 passed 0/5. This is a measured tradeoff, not a blanket “batching is
+better” claim.
+
+The full evidence is committed in
+`reports/repeated_local_reference_cpu.md`, the workload in
+`reports/inference_workload_128.jsonl`, and the raw rows in
+`reports/repeated_local_trace_cpu.jsonl`.
+
+These are local reference measurements, not NVIDIA L4 or Cloud Run results.
+A real cloud run is required before claiming GPU utilization, billing
+savings, or cloud capacity improvements.
 
 ```bash
 python -m pip install -e '.[local-benchmark]'
 python benchmarks/local_reference.py \
   --device cpu \
-  --requests 16 \
-  --batch-size 4 \
+  --requests 128 \
+  --trials 5 \
+  --batch-sizes 2,4,8 \
   --max-new-tokens 8 \
-  --p95-slo-ms 15 \
-  --json-output reports/local_reference_cpu.json \
-  --markdown-output reports/local_reference_cpu.md
+  --p95-slo-ms 20 \
+  --seed 17 \
+  --workload-output reports/inference_workload_128.jsonl \
+  --trace-output reports/repeated_local_trace_cpu.jsonl \
+  --json-output reports/repeated_local_reference_cpu.json \
+  --markdown-output reports/repeated_local_reference_cpu.md
+```
+
+To generate only the deterministic workload data:
+
+```bash
+l4flow-workload --requests 128 --seed 17 --output reports/inference_workload_128.jsonl
 ```
 
 ## GCP integration

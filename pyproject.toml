@@ -29,6 +29,7 @@ local-benchmark = [
 [project.scripts]
 l4flow-benchmark = "l4flow.benchmark:main"
 l4flow-gate = "l4flow.gate:main"
+l4flow-workload = "l4flow.workload:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
