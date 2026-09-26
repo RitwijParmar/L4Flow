@@ -1,0 +1,4 @@
+{"trace_id":"r-001","timestamp_s":1,"backend":"vllm","status":"ok","latency_ms":116,"ttft_ms":36,"input_tokens":96,"output_tokens":32,"estimated_cost_usd":0.00010}
+{"trace_id":"r-002","timestamp_s":2,"backend":"vllm","status":"ok","latency_ms":132,"ttft_ms":41,"input_tokens":96,"output_tokens":32,"estimated_cost_usd":0.00010}
+{"trace_id":"r-003","timestamp_s":3,"backend":"vllm","status":"ok","latency_ms":151,"ttft_ms":47,"input_tokens":128,"output_tokens":48,"estimated_cost_usd":0.00014}
+{"trace_id":"r-004","timestamp_s":4,"backend":"vllm","status":"ok","latency_ms":170,"ttft_ms":52,"input_tokens":128,"output_tokens":48,"estimated_cost_usd":0.00014}

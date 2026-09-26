@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "l4flow"
 version = "0.1.0"
-description = "A cost-aware, cold-start-aware LLM inference gateway for Google Cloud Run GPU"
+description = "Engine-agnostic inference SLO and cost regression gates for GCP and OpenAI-compatible endpoints"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -28,6 +28,7 @@ local-benchmark = [
 
 [project.scripts]
 l4flow-benchmark = "l4flow.benchmark:main"
+l4flow-gate = "l4flow.gate:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

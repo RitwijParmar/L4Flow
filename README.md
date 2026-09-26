@@ -1,30 +1,61 @@
 # L4Flow
 
-L4Flow is a cost-aware, cold-start-aware LLM inference gateway for Google Cloud Run GPU. It exposes one OpenAI-compatible endpoint and chooses a CPU-first or GPU route using request size, output budget, GPU readiness, and in-flight pressure.
+L4Flow is an engine-agnostic inference SLO and cost regression gate for
+OpenAI-compatible endpoints. It turns raw request traces into a release
+decision: did the candidate deployment regress p95 latency, streamed TTFT,
+error rate, or cost per 1,000 output tokens?
 
-The project is intentionally an inference-systems benchmark, not a chatbot. The primary result is a reproducible comparison of:
+## Why this is not TickYantra
 
-1. always CPU;
-2. always GPU;
-3. adaptive routing with fallback and saturation handling.
+[TickYantra](https://github.com/RitwijParmar/TickYantra) is the live serving
+control plane: it owns bounded admission, prefix affinity, adaptive SLO
+feedback, and the SGLang request path.
 
-## Local quickstart
+L4Flow sits outside the serving engine. It does not implement admission,
+continuous batching, prefix scheduling, KV-cache management, or model
+execution. Instead, it evaluates any equivalent endpoint—SGLang, vLLM,
+Vertex AI, or a Cloud Run service—from black-box traces and blocks a release
+when the candidate violates a performance or cost policy. The two projects
+can therefore be used together: TickYantra controls the path; L4Flow verifies
+the path across deployments.
+
+```text
+SGLang / vLLM / Vertex / Cloud Run endpoint
+                    |
+                    v
+             JSONL request traces
+                    |
+                    v
+       L4Flow normalize -> summarize -> gate
+                    |
+             PASS / FAIL + evidence
+```
+
+## Quickstart: run a release gate
 
 ```bash
 cd L4Flow
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
-uvicorn l4flow.app:app --reload --port 8080
+
+l4flow-gate \
+  examples/traces/baseline.jsonl \
+  examples/traces/candidate.jsonl \
+  --output reports/example-gate.json \
+  --markdown-output reports/example-gate.md
 ```
 
-The default `dry-run` mode uses deterministic mock backends so the routing logic can be tested without downloading a model or spending cloud credits.
+The trace loader accepts common aliases such as `request_id`/`trace_id`,
+`e2e_latency_ms`/`latency_ms`, and `prompt_tokens`/`input_tokens`, so a small
+adapter can feed exports from different serving stacks into the same gate.
 
-```bash
-curl -s http://127.0.0.1:8080/healthz | jq
-curl -i -s http://127.0.0.1:8080/v1/chat/completions -H 'content-type: application/json' -d '{"model":"l4flow-router","messages":[{"role":"user","content":"hello"}],"max_tokens":64}'
-l4flow-benchmark --url http://127.0.0.1:8080 --requests 20 --concurrency 4 --policies auto,cpu,gpu --output reports/local-benchmark.json --markdown-output reports/local-benchmark.md
-```
+The gate checks:
+
+- p95 end-to-end latency regression;
+- p95 TTFT regression when both traces contain streamed TTFT;
+- absolute error-rate increase;
+- estimated cost per 1,000 output tokens.
 
 Run the tests with:
 
@@ -32,39 +63,67 @@ Run the tests with:
 pytest -q
 ```
 
-## Verified local improvement
+## Optional endpoint benchmark
 
-Run the real local reference benchmark with the optional Transformers dependencies:
+The repository also contains a small OpenAI-compatible endpoint fixture and a
+client benchmark. This is an input producer for the observability layer, not
+the project's serving contribution. In default `dry-run` mode it uses
+deterministic mock backends and consumes no model or GPU credits.
 
-    python -m pip install -e '.[local-benchmark]'
-    python benchmarks/local_reference.py --device cpu --requests 16 --batch-size 4 --max-new-tokens 8 --p95-slo-ms 15 --json-output reports/local_reference_cpu.json --markdown-output reports/local_reference_cpu.md
+```bash
+uvicorn l4flow.app:app --reload --port 8080
+l4flow-benchmark \
+  --url http://127.0.0.1:8080 \
+  --requests 20 \
+  --concurrency 4 \
+  --policies auto,cpu,gpu \
+  --output reports/local-benchmark.json \
+  --markdown-output reports/local-benchmark.md \
+  --trace-dir reports/traces
+```
 
-The committed report measured 2.72x request-throughput improvement and 172.27% token-throughput improvement from micro-batching, with both strategies under the 15 ms p95 SLO. These are local CPU reference metrics from the tiny-random-gpt2 checkpoint; they are not Cloud Run L4 results.
+The fixture exposes `/healthz`, `/metrics`, and `/metrics/summary` so an
+experiment can collect route, token, latency, fallback, and estimated-cost
+evidence without coupling the gate to a particular model server. With
+`--trace-dir`, the same run also emits normalized JSONL traces that can be
+passed directly to `l4flow-gate`.
 
-## Routing contract
+## Verified local reference result
 
-The gateway accepts standard `/v1/chat/completions` JSON. For controlled experiments, set `x-l4flow-route` to `auto`, `cpu`, or `gpu`. Every successful response includes:
+The committed local report measured serial versus micro-batched Transformers
+inference on `hf-internal-testing/tiny-random-gpt2` using CPU:
 
-- `x-l4flow-route`: actual backend used;
-- `x-l4flow-reason`: policy decision;
-- `x-l4flow-estimated-prompt-tokens`: cheap pre-tokenization estimate;
-- `x-l4flow-latency-ms`: end-to-end gateway latency;
-- `x-l4flow-fallback: true` when a GPU failure was served by CPU.
+- request throughput: **186.864 -> 508.765 requests/s (2.72x)**;
+- generated-token throughput: **1,494.909 -> 4,070.120 tokens/s (172.27%)**;
+- p95 latency: **6.117 ms -> 8.824 ms**, with both strategies under a
+  **15 ms p95 SLO**.
 
-/metrics exposes Prometheus-compatible counters. /metrics/summary returns machine-readable route mix, decision reasons, p50/p95 latency, fallback rate, token totals, and estimated cost per 1,000 completion tokens.
+These are reproducible local reference measurements, not NVIDIA L4 or Cloud
+Run results. A real run is required before claiming cloud latency, GPU
+utilization, cost savings, or capacity improvements.
 
-## GCP deployment
+```bash
+python -m pip install -e '.[local-benchmark]'
+python benchmarks/local_reference.py \
+  --device cpu \
+  --requests 16 \
+  --batch-size 4 \
+  --max-new-tokens 8 \
+  --p95-slo-ms 15 \
+  --json-output reports/local_reference_cpu.json \
+  --markdown-output reports/local_reference_cpu.md
+```
 
-The Terraform path creates:
+## GCP integration
 
-- an internal Cloud Run L4/vLLM inference service with `min_instance_count=0` and `max_instance_count=1`;
-- a CPU Cloud Run router with a bounded maximum instance count;
-- service-to-service Cloud Run identity-token authentication;
-- no public exposure of the GPU backend.
+Terraform in `infra/terraform` provisions a bounded Cloud Run GPU endpoint and
+an authenticated CPU-side service for producing real traces. It is an
+optional experiment target; the release gate remains usable against any
+already-running endpoint and does not require a GPU.
 
-The router is public in the starter Terraform for easy demo access. Before a real deployment, replace the `allUsers` invoker grant with an authenticated caller or an API gateway.
-
-Prerequisites:
+The deployment deliberately keeps the GPU service private, sets scale-to-zero
+and a maximum instance count of one, and uses service-to-service identity
+tokens. Configure a billing budget and verify GPU quota before applying it.
 
 ```bash
 gcloud auth login
@@ -73,22 +132,10 @@ export REGION="us-east4"
 ./infra/scripts/deploy.sh
 ```
 
-The GPU service uses one NVIDIA L4 with no zonal redundancy, and the deployment bounds it to one instance. Confirm GPU quota and configure a billing budget before applying Terraform. GPU instances can scale to zero, but an active GPU instance is billed for its full lifecycle.
+Do not report cloud metrics until the trace, model, region, concurrency,
+output budget, and billing evidence are stored with the run.
 
-## Resume metrics
+## Resume evidence
 
-The repository includes resume evidence and claim boundaries in docs/RESUME.md. The code can produce strong performance metrics, but live latency, throughput, GPU utilization, and savings must come from a real GCP run. Dry-run numbers are only routing/observability tests and should not be presented as GPU performance.
-
-## Evaluation plan
-
-The benchmark report should record at least:
-
-- p50/p95 latency and time-to-first-token;
-- completion tokens/second;
-- cold-start delay;
-- GPU utilization and in-flight queue pressure;
-- failures and fallback rate;
-- cost per 1,000 output tokens;
-- SLO violations under bursty load.
-
-Do not claim savings until the three policies are run against the same prompt set, concurrency schedule, region, model, and output budget.
+See [docs/RESUME.md](docs/RESUME.md) for evidence-ranked bullets and the
+boundary between verified local results and pending GCP measurements.
